@@ -2,6 +2,6 @@
   (:use clojure.test
         cconf.core))
 
-(deftest a-test
-  (testing "FIXME, I fail."
+(deftest "loading configs"
+  (testing "argv"
     (is (= 0 1))))
