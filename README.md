@@ -43,7 +43,7 @@ There is no custom configuration for cconf's command-line arg parsing, yet. Howe
     <td>capturing params</td><td>-h localhost --host localhost</td><td>{:h "localhost", :host "localhost"}</td>
   </tr>
   <tr>
-    <td>auto-parsing numbers</td><td>-p 80 or --port 80</td><td>{:p 80, :port 80}</td>
+    <td>auto-parsing numbers</td><td>-p 80 --port 80</td><td>{:p 80, :port 80}</td>
   </tr>
   <tr>
     <td>double-dash</td><td>-p 80 -- other args</td><td>{:p 80, :_ ["other" "args"]}</td>
