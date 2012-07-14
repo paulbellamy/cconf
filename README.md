@@ -1,6 +1,6 @@
 # cconf
 
-Configuration management for Clojure programs
+Easy configuration for Clojure apps
 
 ## Install
 

@@ -1,5 +1,5 @@
-(defproject cconf "0.1.0-alpha"
-  :description "Easy configuration files for Clojure apps"
+(defproject cconf "0.1.0-alpha" ;; Don't forget to update the readme!
+  :description "Easy configuration for Clojure apps"
   :url "http://github.com/paulbellamy/cconf"
   :license {:name "MIT"
             :url "http://opensource.org/licenses/MIT"}
