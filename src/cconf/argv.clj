@@ -1,4 +1,5 @@
 (ns cconf.argv
+  (:use [cconf.common])
   (:require [clojure.string :as string]))
 
 (defn- merge-options
@@ -6,19 +7,7 @@
   [val-in-result val-in-latter]
   (concat val-in-result val-in-latter))
 
-(defn- parse-capture
-  "Parse a capture value, or return true if the capture is nil. Attempts to parse the value as a Clojure object, and if that fails returns a string."
-  [value]
-  (try
-    (binding [*read-eval* false]
-      (let [parsed (read-string value)]
-        (if (symbol? parsed)
-          value
-          parsed)))
-    (catch NumberFormatException e value)
-    (catch Exception e true)))
-
-(defn- parse-boolean-group
+(defn parse-boolean-group
   "Parse grouped booleans (-bgI) or with a trailing capture: (-bgh localhost)"
   [opt capture]
   (let [matches (nthrest (string/split opt #"") 2)
@@ -27,7 +16,7 @@
         result (apply hash-map (interleave keywords values))]
     (if (not (nil? capture))
       (let [last-key (keyword (re-find #".$" opt))
-            last-value (parse-capture capture)]
+            last-value (parse-value capture)]
         (assoc result last-key last-value))
       result)))
 
@@ -36,18 +25,18 @@
   [opt capture]
   (let [[_ no] (re-matches #"^--no-(.+)" opt)
         [_ name] (re-matches #"^--(.+)" opt)
-        value (parse-capture capture)]
+        value (parse-value capture)]
     (if no
       (assoc {} (keyword no) false)
-      (assoc {} (keyword name) value))))
+      (assoc {} (keyword name) (if capture value true)))))
 
 (defn- parse-bare
   "Parse a bare option into the result array"
   ([opt] (parse-bare opt nil))
   ([opt capture]
      (if capture
-       {:_ [(parse-capture opt) (parse-capture capture)]}
-       {:_ [(parse-capture opt)]})))
+       {:_ [(parse-value opt) (parse-value capture)]}
+       {:_ [(parse-value opt)]})))
 
 (defn- parse-option
   "Determine an option's type and parse it"
@@ -71,7 +60,6 @@
                 (parse-options (rest argv)))
           (cons (parse-option opt nil)
                 (parse-options argv)))))))
-
 (defn parse
   "Parse command line options"
   ([argv] (parse argv {}))

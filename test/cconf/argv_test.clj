@@ -111,11 +111,14 @@
       (is (empty? (:_ result))))))
 
 (deftest safe-parsing
-  (let [result (parse ["--eval" "#=(java.util.Date.)}"
+  (let [result (parse ["--nil" "nil"
+                       "--eval" "#=(java.util.Date.)}"
                        "--map" "{:map \"of stuff\"}"
                        "--symbol" "fooey"])]
+    (testing "passing 'nil' as a value"
+      (is (= (:nil result) nil)))
     (testing "trying to eval stuff in the capture"
-      (is (= (:eval result) true)))
+      (is (= (:eval result) "#=(java.util.Date.)}")))
     (testing "loading in an object"
       (is (= (:map result) {:map "of stuff"})))
     (testing "raw symbols should stay strings"

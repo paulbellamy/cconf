@@ -6,8 +6,8 @@
   (testing "arg (no options)"
     (binding [*command-line-args* ["-b" "--port" "80"]]
       (is (= (argv) {:b true, :port 80}))))
-  (testing "env (no options)"
-    (is (= 0 1)))
+  (testing "env (no options)"     ;; System/getenv is hard to stub, so
+    (is (string? (:HOME (env))))) ;; we just check it gets *something*
   (testing "file"
     (is (= 0 1)))
   (testing "defaults"
