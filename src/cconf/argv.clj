@@ -43,10 +43,11 @@
 
 (defn- parse-bare
   "Parse a bare option into the result array"
-  [opt capture]
-  (if capture
-    {:_ [(parse-capture opt) (parse-capture capture)]}
-    {:_ [(parse-capture opt)]}))
+  ([opt] (parse-bare opt nil))
+  ([opt capture]
+     (if capture
+       {:_ [(parse-capture opt) (parse-capture capture)]}
+       {:_ [(parse-capture opt)]})))
 
 (defn- parse-option
   "Determine an option's type and parse it"
@@ -60,14 +61,16 @@
   "Parse an option off of argv, returning the result, and remainder"
   [[opt & argv]]
   (when opt
-    (if-let [[_ opt equals] (re-matches #"^(--.*)=(.*)$" opt)]
-      (cons (parse-option opt equals)
-            (parse-options argv))
-      (if-let [matched (and (first argv) (re-matches #"^[^-].*" (first argv)))]
-        (cons (parse-option opt matched)
-              (parse-options (rest argv)))
-        (cons (parse-option opt nil)
-              (parse-options argv))))))
+    (if (= opt "--")
+      (map parse-bare argv)
+      (if-let [[_ opt equals] (re-matches #"^(--.*)=(.*)$" opt)]
+        (cons (parse-option opt equals)
+              (parse-options argv))
+        (if-let [matched (and (first argv) (re-matches #"^[^-].*" (first argv)))]
+          (cons (parse-option opt matched)
+                (parse-options (rest argv)))
+          (cons (parse-option opt nil)
+                (parse-options argv)))))))
 
 (defn parse
   "Parse command line options"

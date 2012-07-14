@@ -85,6 +85,22 @@
       (is (= (:fail result) false))
       (is (= (:no-fail result) nil)))))
 
+(deftest vectors
+  (let [result (parse ["-a" "[1 2 3 4 5]"])]
+    (testing "should parse vectors"
+      (is (= (:a result) [1 2 3 4 5])))))
+
+(deftest strings
+  (let [result (parse ["-s" "a more complicated string"])]
+    (testing "should parse strings with spaces"
+      (is (= (:s result) "a more complicated string")))))
+
+(deftest double-dash
+  (let [result (parse ["-b" "--" "-d" "ohai"])]
+    (testing "should put everything after -- into :_"
+      (is (= (:b result) true))
+      (is (= (:_ result) ["-d" "ohai"])))))
+
 (deftest safe-parsing
   (let [result (parse ["--eval" "#=(java.util.Date.)}"
                        "--map" "{:map \"of stuff\"}"
