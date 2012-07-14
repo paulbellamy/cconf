@@ -101,6 +101,15 @@
       (is (= (:b result) true))
       (is (= (:_ result) ["-d" "ohai"])))))
 
+(deftest explicit-booleans
+  (let [result (parse ["-t" "true" "-f" "false"])]
+    (testing "should capture the explicit true"
+      (is (= (:t result) true)))
+    (testing "should capture the explicit false"
+      (is (= (:f result) false)))
+    (testing "remainder should be empty"
+      (is (empty? (:_ result))))))
+
 (deftest safe-parsing
   (let [result (parse ["--eval" "#=(java.util.Date.)}"
                        "--map" "{:map \"of stuff\"}"
