@@ -34,9 +34,12 @@
 (defn- parse-long-boolean
   "Parse a long boolean (--bool)"
   [opt capture]
-  (let [[_ name] (re-matches #"^--(.+)" opt)
+  (let [[_ no] (re-matches #"^--no-(.+)" opt)
+        [_ name] (re-matches #"^--(.+)" opt)
         value (parse-capture capture)]
-    (assoc {} (keyword name) value)))
+    (if no
+      (assoc {} (keyword no) false)
+      (assoc {} (keyword name) value))))
 
 (defn- parse-bare
   "Parse a bare option into the result array"
@@ -49,9 +52,9 @@
   "Determine an option's type and parse it"
   [opt capture]
   (cond
-   (re-matches #"^--.+" opt) (parse-long-boolean opt capture)
-   (re-matches #"^-[^-]+" opt) (parse-boolean-group opt capture)
-   :else (parse-bare opt capture)))  
+   (re-matches #"^--.+" opt)    (parse-long-boolean opt capture)
+   (re-matches #"^-[^-]+" opt)  (parse-boolean-group opt capture)
+   :else                        (parse-bare opt capture)))  
 
 (defn- parse-options
   "Parse an option off of argv, returning the result, and remainder"

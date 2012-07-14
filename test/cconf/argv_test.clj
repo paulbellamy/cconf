@@ -67,6 +67,24 @@
     (testing "remainder is empty"
       (is (empty? (:_ result))))))
 
+(deftest mixed-short-and-long-and-captures
+  (let [result (parse ["-h" "localhost"
+                       "--long" "oh-boy"
+                       "-bg" "123"
+                       "file.clj"])]
+    (testing "captures everything"
+      (is (= (:h result) "localhost"))
+      (is (= (:long result) "oh-boy"))
+      (is (= (:b result) true))
+      (is (= (:g result) 123))
+      (is (= (:_ result) ["file.clj"])))))
+
+(deftest no
+  (let [result (parse ["--no-fail"])]
+    (testing "should be false if prefixed with 'no'"
+      (is (= (:fail result) false))
+      (is (= (:no-fail result) nil)))))
+
 (deftest safe-parsing
   (let [result (parse ["--eval" "#=(java.util.Date.)}"
                        "--map" "{:map \"of stuff\"}"
