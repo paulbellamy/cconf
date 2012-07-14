@@ -1,12 +1,15 @@
-(ns cconf.core)
+(ns cconf.core
+  (:require [cconf.argv]))
 
 (defn argv
   "Load argv data into the config"
+  ([] (argv {}))
   ([options] (argv {} options))
-  ([config options] {}))
+  ([config options] (cconf.argv/parse *command-line-args*)))
 
 (defn env
   "Load environment variables into the config"
+  ([] (env {}))
   ([options] (env {} options))
   ([config options] {}))
 

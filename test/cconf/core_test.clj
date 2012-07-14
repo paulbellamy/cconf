@@ -3,9 +3,10 @@
         cconf.core))
 
 (deftest loading-individual-configs
-  (testing "argv"
-    (is (= 0 1)))
-  (testing "env"
+  (testing "arg (no options)"
+    (binding [*command-line-args* ["b" "port" "80"]]
+      (is (= (argv) {:b true, :port 80}))))
+  (testing "env (no options)"
     (is (= 0 1)))
   (testing "file"
     (is (= 0 1)))
