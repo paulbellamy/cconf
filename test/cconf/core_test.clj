@@ -4,7 +4,7 @@
 
 (deftest loading-individual-configs
   (testing "arg (no options)"
-    (binding [*command-line-args* ["b" "port" "80"]]
+    (binding [*command-line-args* ["-b" "--port" "80"]]
       (is (= (argv) {:b true, :port 80}))))
   (testing "env (no options)"
     (is (= 0 1)))
