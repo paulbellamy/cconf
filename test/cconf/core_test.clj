@@ -17,8 +17,14 @@
 
 (deftest merging-configs
   (testing "non-conflicting keys"
-    (is (= 0 1)))
+    (let [config (-> (defaults {:a "hi"})
+                     (defaults {:b "bye"}))]
+      (is (= config {:a "hi" :b "bye"}))))
   (testing "conflicting keys"
-    (is (= 0 1)))
-  (testing "deeply merging hashes"
-    (is (= 0 1))))
+    (let [config (-> (defaults {:a "hi"})
+                     (defaults {:a "bye"}))]
+    (is (= config {:a "hi"}))))
+  (testing "no deeply merging hashes"
+    (let [config (-> (defaults {:a {:b "hi"}})
+                     (defaults {:a {:c "bye"}}))]
+    (is (= config {:a {:b "hi"}})))))
