@@ -23,4 +23,4 @@
 (defn defaults
   "Load any default values into the config"
   ([options] (defaults {} options))
-  ([config options] {}))
+  ([config options] options))

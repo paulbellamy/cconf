@@ -9,11 +9,11 @@
   (testing "env (no options)"     ;; System/getenv is hard to stub, so
     (is (string? (:HOME (env))))) ;; we just check it gets *something*
   (testing "file"
-    (is (= (file "config.json") {:bool true
-                                 :vector [1 2 3 4]
-                                 :string "ohai again"})))
+    (is (= (file "./test/cconf/config.json") {:bool true
+                                              :vector [1 2 3 4 5]
+                                              :stringy "a string"})))
   (testing "defaults"
-    (is (= 0 1))))
+    (is (= (defaults {:a true :b "hi"}) {:a true :b "hi"}))))
 
 (deftest merging-configs
   (testing "non-conflicting keys"
