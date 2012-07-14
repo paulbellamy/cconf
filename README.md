@@ -1,6 +1,6 @@
 # cconf
 
-Configuration file parsing for Clojure programs
+Configuration management for Clojure programs
 
 ## Install
 
@@ -13,10 +13,12 @@ Configuration file parsing for Clojure programs
 ```Clojure
 (require 'cconf)
 
-(def settings (-> (cconf/argv)                 ;; Load command-line arguments    (highest priority)
-                  (cconf/env)                  ;; Load environment variables
-                  (cconf/file "config.json"))) ;; Load options from config.json  (lowest priority)
+(def settings (-> (cconf/argv)                                    ;; Load command-line arguments    (highest priority)
+                  (cconf/env)                                     ;; Load environment variables
+                  (cconf/file "config.json")                      ;; Load options from config.json
+                  (cconf/defaults {:database-host "localhost"}))) ;; Set some default options       (lowest priority)
 
+;; Get some settings. The 'settings' object is just a map.
 (:database-host settings)
 (:database-port settings)
 ```
