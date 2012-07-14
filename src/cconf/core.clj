@@ -1,6 +1,7 @@
 (ns cconf.core
   (:require [cconf.argv]
-            [cconf.env]))
+            [cconf.env]
+            [cconf.file]))
 
 (defn argv
   "Load argv data into the config"
@@ -17,7 +18,7 @@
 (defn file
   "Load data from a json file into the config"
   ([filename] (file {} filename))
-  ([config filename] {}))
+  ([config filename] (cconf.file/parse filename)))
 
 (defn defaults
   "Load any default values into the config"
