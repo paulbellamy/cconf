@@ -60,6 +60,13 @@
     (testing "remainder is empty"
       (is (empty? (:_ result))))))
 
+(deftest long-capture-equals
+  (let [result (parse ["--never=give-you-up"])]
+    (testing "capturing long args with equals"
+      (is (= (:never result) "give-you-up")))
+    (testing "remainder is empty"
+      (is (empty? (:_ result))))))
+
 (deftest safe-parsing
   (let [result (parse ["--eval" "#=(java.util.Date.)}"
                        "--map" "{:map \"of stuff\"}"

@@ -7,7 +7,7 @@
   (concat val-in-result val-in-latter))
 
 (defn- parse-capture
-  "Parse a capture value, or return true if the capture is nil. Attempts to parse the value as a number, and if that fails returns a string."
+  "Parse a capture value, or return true if the capture is nil. Attempts to parse the value as a Clojure object, and if that fails returns a string."
   [value]
   (try
     (binding [*read-eval* false]
@@ -17,7 +17,7 @@
           parsed)))
     (catch NumberFormatException e value)
     (catch Exception e true)))
-  
+
 (defn- parse-boolean-group
   "Parse grouped booleans (-bgI) or with a trailing capture: (-bgh localhost)"
   [opt capture]
@@ -55,14 +55,16 @@
 
 (defn- parse-options
   "Parse an option off of argv, returning the result, and remainder"
-  [[opt capture & argv]]
+  [[opt & argv]]
   (when opt
-    (let [matched (and capture (re-matches #"^[^-].*" capture))]
-      (cons (parse-option opt matched)
-            (parse-options
-             (if matched
-               argv
-               (cons capture argv)))))))
+    (if-let [[_ opt equals] (re-matches #"^(--.*)=(.*)$" opt)]
+      (cons (parse-option opt equals)
+            (parse-options argv))
+      (if-let [matched (and (first argv) (re-matches #"^[^-].*" (first argv)))]
+        (cons (parse-option opt matched)
+              (parse-options (rest argv)))
+        (cons (parse-option opt nil)
+              (parse-options argv))))))
 
 (defn parse
   "Parse command line options"
