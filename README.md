@@ -34,31 +34,45 @@ There is no custom configuration for cconf's command-line arg parsing, yet. Howe
     <th></th><th>Usage</th><th>Becomes</th>
   </tr>
   <tr>
-    <td>booleans</td><td>```-b``` or ```--debug```</td><td>```{:b true, :debug true}```</td>
+    <td>booleans</td><td>-b --debug</td><td>{:b true, :debug true}</td>
   </tr>
   <tr>
-    <td>grouped booleans</td><td>```-avz```</td><td>```{:a true, :v true, :z true}```</td>
+    <td>grouped booleans</td><td>-avz</td><td>{:a true, :v true, :z true}</td>
   </tr>
   <tr>
-    <td>capturing params</td><td>```-h localhost``` or ```--host localhost```</td><td>```{:h "localhost", :host "localhost"}```</td>
+    <td>capturing params</td><td>-h localhost --host localhost</td><td>{:h "localhost", :host "localhost"}</td>
   </tr>
   <tr>
-    <td>auto-parsing numbers</td><td>```-p 80``` or ```--port 80```</td><td>```{:p 80, :port 80}```</td>
+    <td>auto-parsing numbers</td><td>-p 80 or --port 80</td><td>{:p 80, :port 80}</td>
   </tr>
   <tr>
-    <td>double-dash</td><td>```-p 80 -- other args```</td><td>```{:p 80, :_ ["other" "args"]}```</td>
+    <td>double-dash</td><td>-p 80 -- other args</td><td>{:p 80, :_ ["other" "args"]}</td>
   </tr>
   <tr>
-    <td>clojure objects</td><td>```--a-map {:a 1, :b 2}```</td><td>```{:a-map {:a 1, :b 2}}```</td>
+    <td>clojure objects</td><td>--a-map {:a 1, :b 2}</td><td>{:a-map {:a 1, :b 2}}</td>
   </tr>
   <tr>
-    <td>negating booleans</td><td>```--no-debug``` or ```--debug false```</td><td>```{:debug false}```</td>
+    <td>negating booleans</td><td>--no-debug --debug false</td><td>{:debug false}</td>
   </tr>
 </table>
 
 ## ```cconf/env``` Environment Variables
 
 Environment variables are not downcased, or otherwise renamed. For example, ```HOME=/Users/paulbellamy``` will be parsed as ```{:HOME "/Users/paulbellamy"}```. The values will be parsed where possible, so values like ```22/7```, ```{:a 1, :b 2}```, ```true```, ```false```, etc... will be parsed into their Clojure counterparts. If parsing a value is not possible it will be kept as a string.
+
+Each of the source methods is entirely independent (they just create or modify a map), so they can be used independently as well. If we just want to get the ```$CLASSPATH``` environment variable, we can do:
+
+```Clojure
+(require 'cconf)
+(println (:CLASSPATH (cconf/env)))
+```
+
+Similarly, if we just want to check a command-line argument we could do:
+
+```Clojure
+(require 'cconf)
+(println (:port (cconf/argv)))
+```
 
 ## ```cconf/file``` JSON Config Files
 
