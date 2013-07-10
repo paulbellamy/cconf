@@ -6,4 +6,4 @@
 (defn parse
   "Parse a json config file"
   [filename]
-  (json/read-json (slurp filename)))
+  (json/read-str (slurp filename) :key-fn keyword))
