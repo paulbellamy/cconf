@@ -5,7 +5,7 @@ Easy configuration for Clojure apps
 ## Install
 
 ```
-[cconf "0.3.0"]
+[cconf "1.0.0"]
 ```
 
 ## Usage
