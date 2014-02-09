@@ -11,7 +11,7 @@ Easy configuration for Clojure apps
 ## Usage
 
 ```Clojure
-(require 'cconf)
+(require 'cconf.core)
 
 (def settings (-> (cconf/argv)                  ;; Load command-line arguments    (highest priority)
                   (cconf/env)                   ;; Load environment variables
