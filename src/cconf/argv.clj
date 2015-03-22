@@ -10,7 +10,7 @@
 (defn parse-boolean-group
   "Parse grouped booleans (-bgI) or with a trailing capture: (-bgh localhost)"
   [opt capture]
-  (let [matches (nthrest (string/split opt #"") 2)
+  (let [matches (rest (string/split opt #""))
         keywords (map keyword matches)
         values (repeat true)
         result (apply hash-map (interleave keywords values))]
