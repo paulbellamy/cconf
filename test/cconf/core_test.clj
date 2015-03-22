@@ -13,18 +13,18 @@
                                               :vector [1 2 3 4 5]
                                               :stringy "a string"})))
   (testing "defaults"
-    (is (= (defaults {:a true :b "hi"}) {:a true :b "hi"}))))
+    (is (= (defaults {} {:a true :b "hi"}) {:a true :b "hi"}))))
 
 (deftest merging-configs
   (testing "non-conflicting keys"
-    (let [config (-> (defaults {:a "hi"})
+    (let [config (-> {:a "hi"}
                      (defaults {:b "bye"}))]
       (is (= config {:a "hi" :b "bye"}))))
   (testing "conflicting keys"
-    (let [config (-> (defaults {:a "hi"})
+    (let [config (-> {:a "hi"}
                      (defaults {:a "bye"}))]
     (is (= config {:a "hi"}))))
   (testing "no deeply merging hashes"
-    (let [config (-> (defaults {:a {:b "hi"}})
+    (let [config (-> {:a {:b "hi"}}
                      (defaults {:a {:c "bye"}}))]
     (is (= config {:a {:b "hi"}})))))

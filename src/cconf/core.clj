@@ -6,15 +6,13 @@
 (defn argv
   "Load argv data into the config"
   ([] (argv {}))
-  ([options] (argv {} options))
-  ([config options]
+  ([config]
      (merge (cconf.argv/parse *command-line-args*) config)))
 
 (defn env
   "Load environment variables into the config"
   ([] (env {}))
-  ([options] (env {} options))
-  ([config options]
+  ([config]
      (merge (cconf.env/parse (System/getenv)) config)))
 
 (defn file
@@ -25,6 +23,5 @@
 
 (defn defaults
   "Load any default values into the config"
-  ([options] (defaults {} options))
-  ([config options]
-     (merge options config)))
+  ([config default-values]
+     (merge default-values config)))
