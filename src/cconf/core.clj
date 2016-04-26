@@ -15,11 +15,18 @@
   ([config]
      (merge (cconf.env/parse (System/getenv)) config)))
 
+(defn- read-file [config filename parse-fn]
+  (merge (parse-fn filename) config))
+
 (defn file
   "Load data from a json file into the config"
-  ([filename] (file {} filename))
-  ([config filename]
-     (merge (cconf.file/parse filename) config)))
+  ([filename] (read-file {} filename cconf.file/parse-json))
+  ([config filename] (read-file config filename cconf.file/parse-json)))
+
+(defn edn-file
+  "Load data from a EDN file into the config"
+  ([filename] (read-file {} filename cconf.file/parse-edn))
+  ([config filename] (read-file config filename cconf.file/parse-edn)))
 
 (defn defaults
   "Load any default values into the config"
