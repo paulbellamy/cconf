@@ -12,6 +12,10 @@
     (is (= (file "./test/cconf/config.json") {:bool true
                                               :vector [1 2 3 4 5]
                                               :stringy "a string"})))
+  (testing "edn-file"
+    (is (= (edn-file "./test/cconf/config.edn") {:bool true
+                                                 :vector [1 2 3 4 5]
+                                                 :stringy "a string"})))
   (testing "defaults"
     (is (= (defaults {} {:a true :b "hi"}) {:a true :b "hi"}))))
 
