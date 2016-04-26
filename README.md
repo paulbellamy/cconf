@@ -1,5 +1,8 @@
 # cconf
 
+[![Build
+Status](https://travis-ci.org/paulbellamy/cconf.svg?branch=master)](https://travis-ci.org/paulbellamy/cconf)
+
 Easy configuration for Clojure apps
 
 ## Install
