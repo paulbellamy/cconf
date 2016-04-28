@@ -1,4 +1,4 @@
-(defproject cconf "1.1.0" ;; Don't forget to update the readme!
+(defproject cconf "1.2.0" ;; Don't forget to update the readme!
   :description "Easy configuration for Clojure apps"
   :url "http://github.com/paulbellamy/cconf"
   :license {:name "MIT"
